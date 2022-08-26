@@ -6,11 +6,9 @@ from models.pass_info import PassInfo, PassInfoUpdate
 from pymongo.collection import ReturnDocument
 from helpers.base64_validator import isBase64
 from bson import ObjectId
-import motor.motor_asyncio
+from config.config import db
 
 router = APIRouter()
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["DATABASE_URL"])
-db = client.mongo
 
 config = {
             "id": {'$toString': "$_id"},
@@ -50,7 +48,7 @@ async def get_pass_infos(id: str):
 async def put_pass_infos(id: str, item: PassInfo):
     if isBase64(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
-        
+
     item = jsonable_encoder(item)
     item = await db["pass_infos"].find_one_and_replace(
         {"_id": ObjectId(id)}, 
@@ -67,7 +65,7 @@ async def put_pass_infos(id: str, item: PassInfo):
 async def patch_pass_infos(id: str, item: PassInfoUpdate):
     if isBase64(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
-        
+
     item = jsonable_encoder(item.dict(exclude_unset=True))
     item = await db["pass_infos"].find_one_and_update(
         {"_id": ObjectId(id)}, 
@@ -84,7 +82,7 @@ async def patch_pass_infos(id: str, item: PassInfoUpdate):
 async def delete_pass_infos(id: str):
     if isBase64(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
-        
+
     item = await db["pass_infos"].find_one_and_delete(
         {"_id": ObjectId(id)}
     )
