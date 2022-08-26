@@ -11,3 +11,5 @@ RUN apk add build-base
 RUN pip install --upgrade pip
 RUN pip install -U setuptools pip
 RUN pip install fastapi[all]
+RUN pip install pymongo
+RUN pip install motor

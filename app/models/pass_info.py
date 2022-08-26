@@ -15,3 +15,10 @@ class PassInfo(BaseModel):
     entry: bool
     car_type: CarType
     photo: Union[str, None] = None
+
+class PassInfoUpdate(BaseModel):
+    datetime: Union[datetime, None] = None
+    number: Union[int, None] = None
+    entry: Union[bool, None] = None
+    car_type: Union[CarType, None] = None
+    photo: Union[str, None] = None
