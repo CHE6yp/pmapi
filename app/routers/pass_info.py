@@ -7,16 +7,6 @@ from database.pass_info import *
 
 router = APIRouter()
 
-config = {
-            "id": {'$toString': "$_id"},
-            "_id": 0,
-            "datetime": 1,
-            "number": 1,
-            "entry": 1,
-            "car_type": 1,
-            "photo": 1,
-        }
-
 @router.get("/pass_infos")
 async def get_pass_infos():
     return await find()
