@@ -4,7 +4,6 @@ from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from models.pass_info import PassInfo, PassInfoUpdate
 from pymongo.collection import ReturnDocument
-from helpers.base64_validator import isBase64
 from bson import ObjectId
 from config.config import db
 
@@ -35,7 +34,7 @@ async def post_pass_infos(item: PassInfo):
 
 @router.get("/pass_infos/{id}")
 async def get_pass_infos(id: str):
-    if isBase64(id) == False:
+    if ObjectId.is_valid(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
     item = await db["pass_infos"].find_one({"_id": ObjectId(id)}, config)
@@ -46,7 +45,7 @@ async def get_pass_infos(id: str):
 
 @router.put("/pass_infos/{id}")
 async def put_pass_infos(id: str, item: PassInfo):
-    if isBase64(id) == False:
+    if ObjectId.is_valid(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
     item = jsonable_encoder(item)
@@ -63,7 +62,7 @@ async def put_pass_infos(id: str, item: PassInfo):
 
 @router.patch("/pass_infos/{id}")
 async def patch_pass_infos(id: str, item: PassInfoUpdate):
-    if isBase64(id) == False:
+    if ObjectId.is_valid(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
     item = jsonable_encoder(item.dict(exclude_unset=True))
@@ -80,7 +79,7 @@ async def patch_pass_infos(id: str, item: PassInfoUpdate):
 
 @router.delete("/pass_infos/{id}")
 async def delete_pass_infos(id: str):
-    if isBase64(id) == False:
+    if ObjectId.is_valid(id) == False:
         return Response(status_code=status.HTTP_400_BAD_REQUEST)
 
     item = await db["pass_infos"].find_one_and_delete(
