@@ -13,3 +13,4 @@ RUN pip install -U setuptools pip
 RUN pip install fastapi[all]
 RUN pip install pymongo
 RUN pip install motor
+RUN pip install beanie
